@@ -50,8 +50,9 @@ class EmployeServiceTest {
         when(employeRepository.findById(id)).thenReturn(Optional.of(employe));
 
         // Comportemnet à valider
-        employeService.save(employe);
+        assertDoesNotThrow(() -> employeService.save(employe));
 
+        /* Vérifications inutiles : on compare employé avec lui-même
         // Vérification de l'ajout dans la liste des employés
         Optional<Employe> op = employeRepository.findById(id);
         assertNotNull(op);
@@ -65,6 +66,7 @@ class EmployeServiceTest {
         assertThat(employe.getPrenom()).isEqualTo(employeDB.getPrenom());
         assertThat(employe.getNumDom()).isEqualTo(employeDB.getNumDom());
         assertThat(employe.getNumPortable()).isEqualTo(employeDB.getNumPortable());
+        */
     }
 
     @Test
