@@ -17,7 +17,19 @@ public class EmployeService {
     }
 
     public void save(Employe employe){
+        if (employe == null) throw new IllegalArgumentException("employe is null");
+
+        checkEmptyString(employe.getImmatriculation(), "Cannot insert empty registration");
+        checkEmptyString(employe.getNom(), "Cannot insert empty last name");
+        checkEmptyString(employe.getPrenom(), "Cannot insert empty first name");
+        checkEmptyString(employe.getEmail(), "Cannot insert empty email");
+
         employeRepository.save(employe); // insert & update
+    }
+
+    private void checkEmptyString(String stringToTest, String message) {
+        if (stringToTest == null || stringToTest.isEmpty())
+            throw new IllegalArgumentException(message);
     }
 
     public List<Employe> findAll(){

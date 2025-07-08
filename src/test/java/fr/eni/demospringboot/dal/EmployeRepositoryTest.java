@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /*
  * @DataJpaTest : pour pouvoir tester les méthodes de la BDD (autorise la connexion à la BDD)
  * @AutoConfigureTestDatabase : pour supprimer le comportement par défaut qui va chercher H2 (une BDD embarquée)
+ * @TestMethodOrder : pour que les tests s'exécutent en respectant l'ordre indiqué par les @Order
  */
 @DataJpaTest @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
