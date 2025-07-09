@@ -3,6 +3,7 @@ package fr.eni.demospringboot.dal.associations;
 import fr.eni.demospringboot.bo.associations.DonneesPersos;
 import fr.eni.demospringboot.bo.associations.EtudiantENI;
 import fr.eni.demospringboot.bo.associations.Promo;
+import org.hibernate.TransientObjectException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,7 +76,85 @@ class PromoRepositoryTest {
 
 // Vérification que l'entité a été supprimée
         List<EtudiantENI> etudiants = etudiantRepository.findAll();
-        assertTrue(listeIdEtudiantENIDB.isEmpty());
+        assertTrue(etudiants.isEmpty());
+    }
+
+    @Test
+    public void save_etudiantToExistingPromo_shouldInsertEtudiant() {
+        // Création des données nécessaires au test
+        final Promo promo = Promo
+                .builder()
+                .nom("HCDA_2311B")
+                .build();
+
+        // Association OneToMany
+        promo.setEtudiants(jeuDeDonnees());
+
+        // Appel du comportement
+        final Promo promoDB = repository.save(promo);
+
+        // Action à tester
+        EtudiantENI etu = EtudiantENI.builder()
+                .immatriculation("toto")
+                .email("toto@gmail.com")
+                .promo(promo)
+                .build();
+
+        EtudiantENI actual = etudiantRepository.save(etu);
+
+        assertNotNull(actual.getId());
+        assertThat(actual.getId()).isGreaterThan(0);
+        assertEquals(promoDB, actual.getPromo());
+    }
+
+    @Test
+    public void save_etudiantToNonExistingPromo_shouldThrowException() {
+// Création des données nécessaires au test
+        final Promo promo = Promo
+                .builder()
+                .nom("HCDA_2311B")
+                .build();
+
+        // Association OneToMany
+        promo.setEtudiants(jeuDeDonnees());
+
+        // Action à tester
+        EtudiantENI etu = EtudiantENI.builder()
+                .immatriculation("toto")
+                .email("toto@gmail.com")
+                .promo(promo)
+                .build();
+
+        assertThrows(Exception.class, () -> {
+            etudiantRepository.save(etu); // le save n'est pas réellement effectif tant que le flush n'a pas lieu.
+            etudiantRepository.flush(); // indique que les opérations en cours sont terminées.
+        });
+    }
+
+    @Test
+    public void delete_etudiant_shouldDeleteOnlyEtudiant() {
+        // Création des données nécessaires au test
+        final Promo promo = Promo
+                .builder()
+                .nom("HCDA_2311B")
+                .build();
+
+        // Association OneToMany
+        promo.setEtudiants(jeuDeDonnees());
+
+        final Promo promoDB = repository.save(promo);
+        final EtudiantENI etuToDelete = promoDB.getEtudiants().getFirst();
+
+        // Action à tester
+        etudiantRepository.delete(etuToDelete);
+
+        // Teste la suppression de l'étudiant
+        Optional<EtudiantENI> shouldBeEmpty = etudiantRepository.findById(etuToDelete.getId());
+        assertTrue(shouldBeEmpty.isEmpty());
+
+        // Teste la non-suppression de la promo
+        Optional<Promo> shouldBePresent =  repository.findById(promo.getId());
+        assertTrue(shouldBePresent.isPresent());
     }
 
 

@@ -18,7 +18,10 @@ public class Promo {
 
     private String nom;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "promo_id")
+    @OneToMany(
+            mappedBy = "promo",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     private List<EtudiantENI> etudiants;
 }

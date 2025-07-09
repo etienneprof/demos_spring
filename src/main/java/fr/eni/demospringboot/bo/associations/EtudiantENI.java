@@ -1,10 +1,7 @@
 package fr.eni.demospringboot.bo.associations;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor
@@ -19,4 +16,9 @@ public class EtudiantENI {
     @OneToOne
     @JoinColumn(name = "donnees_persos_id")
     private DonneesPersos donnees;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "promo_id")
+    @ToString.Exclude
+    private Promo promo;
 }
