@@ -1,7 +1,7 @@
 package fr.eni.demospringboot.dal.associations;
 
-import fr.eni.demospringboot.bo.associations.onetoone.AdresseOTO;
-import fr.eni.demospringboot.bo.associations.onetoone.EmployeOTO;
+import fr.eni.demospringboot.bo.associations.AdresseOTO;
+import fr.eni.demospringboot.bo.associations.EmployeOTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

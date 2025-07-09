@@ -1,4 +1,4 @@
-package fr.eni.demospringboot.bo.associations.onetoone;
+package fr.eni.demospringboot.bo.associations;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

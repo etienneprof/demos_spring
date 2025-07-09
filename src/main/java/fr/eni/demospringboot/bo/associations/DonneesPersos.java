@@ -1,6 +1,5 @@
-package fr.eni.demospringboot.bo.associations.onetoone;
+package fr.eni.demospringboot.bo.associations;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
