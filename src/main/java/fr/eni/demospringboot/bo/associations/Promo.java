@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,5 +24,5 @@ public class Promo {
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    private List<EtudiantENI> etudiants;
+    private @Builder.Default List<EtudiantENI> etudiants = new ArrayList<>();
 }

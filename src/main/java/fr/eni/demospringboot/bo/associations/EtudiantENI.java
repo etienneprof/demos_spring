@@ -17,6 +17,10 @@ public class EtudiantENI {
     @JoinColumn(name = "donnees_persos_id")
     private DonneesPersos donnees;
 
+    @ManyToOne
+    @JoinColumn(name = "civilite_id")
+    private Civilite civilite;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promo_id")
     @ToString.Exclude
